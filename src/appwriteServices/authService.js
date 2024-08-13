@@ -39,6 +39,24 @@ class AuthService{
             console.log("Encountered an error at logIn : AuthService :", error)
         }
     }
+
+    async logOut(){
+        try {
+            await this.account.deleteSessions()
+        } catch (error) {
+            console.log("Encountered an error at logOut : AuthService :", error)
+            return false
+        }
+    }
+
+    async getUser(){
+        try {
+            return await this.account.get()
+        } catch (error) {
+            console.log("Encountered an error at getUser : AuthService :", error)
+            return false
+        }
+    }
 }
 
 const authService = new AuthService()
