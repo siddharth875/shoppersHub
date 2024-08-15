@@ -8,16 +8,12 @@ class DatabaseService {
     constructor(){
         this.client.setEndpoint(config.appwriteEndpoint).setProject(config.appwriteProjectId);
         this.database = new Databases(this.client)
-        this.collectionIds = {
-            category : config.appwriteCategoryCollectionId,
-            product : config.appwriteProductCollectionId
-        }
     }
     async create(collectionName, slug, data ){
         try {
             return await this.database.createDocument(
                 config.appwriteDatabaseId,
-                this.collectionIds[collectionName],
+                config.appwriteCollectionId[collectionName],
                 slug,
                 data
             )
@@ -31,7 +27,7 @@ class DatabaseService {
         try {
             return await this.database.getDocument(
                 config.appwriteDatabaseId,
-                this.collectionIds[collectionName],
+                config.appwriteCollectionId[collectionName],
                 slug
             )
         } catch (error) {
@@ -44,7 +40,7 @@ class DatabaseService {
         try {
             return this.database.listDocuments(
                 config.appwriteDatabaseId,
-                this.collectionIds[collectionName],
+                config.appwriteCollectionId[collectionName],
                 quary
             )
         } catch (error) {
@@ -53,11 +49,28 @@ class DatabaseService {
         }
     }
 
-    async update(collectionIds, slug, data){
+    async update(collectionName, slug, data){
         try {
-            
+            return await this.database.updateDocument(
+                config.appwriteDatabaseId,
+                config.appwriteCollectionId[collectionName],
+                data
+            )
         } catch (error) {
             console.log("Encountered an error at update : DatabaseService :", error)
+            return false
+        }
+    }
+
+    async delete(collectionName, slug){
+        try {
+            await this.database.deleteDocument(
+                config.appwriteDatabaseId,
+                config.appwriteCollectionId[collectionName],
+                slug
+            )
+        } catch (error) {
+            console.log("Encountered an error at delete : DatabaseService :", error)
             return false
         }
     }
