@@ -54,6 +54,7 @@ class DatabaseService {
             return await this.database.updateDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId[collectionName],
+                slug,
                 data
             )
         } catch (error) {
